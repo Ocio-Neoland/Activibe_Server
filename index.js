@@ -6,9 +6,7 @@ const CommentRoutes = require("./src/api/routes/comments.routes");
 const FeedRoutes = require("./src/api/routes/feeds.routes");
 const SectionRoutes = require("./src/api/routes/sections.routes");
 const UserRoutes = require("./src/api/routes/users.routes");
-const {
-  configCloudinary,
-} = require("./src/api/middlewares/player.middlewares");
+const { configCloudinary } = require("./src/api/middlewares/img.middleware");
 
 configCloudinary();
 

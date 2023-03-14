@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../../utils/token");
-const { deleteImgCloudinary } = require("../../middlewares/img.middleware");
+const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 
 const loginUser = async (req, res, next) => {
   try {

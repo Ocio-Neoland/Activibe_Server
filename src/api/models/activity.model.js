@@ -22,7 +22,7 @@ const ActivitySchema = new mongoose.Schema(
     },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     feeds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Feed" }],
-    validate: { default: false, enum: [false, true] },
+    validate: { type: Boolean, default: false, enum: [false, true] },
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 const Activity = require("../models/activity.model");
-const { deleteImgCloudinary } = require("../../middlewares/img.middleware");
+const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 
 const getAllActivities = async (req, res, next) => {
   try {
