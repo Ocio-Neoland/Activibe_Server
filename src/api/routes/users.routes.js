@@ -1,5 +1,6 @@
 const express = require("express");
 const UserRoutes = express.Router();
+const { upload } = require("../middlewares/img.middleware");
 const {
   loginUser,
   registerUser,
@@ -9,7 +10,7 @@ const {
 } = require("../controllers/user.controller.js");
 
 UserRoutes.get("/", getUserByID);
-UserRoutes.post("/:id", registerUser);
+UserRoutes.post("/", upload.single("avatar"), registerUser);
 UserRoutes.post("/", loginUser);
 UserRoutes.patch("/:id", updateUser);
 UserRoutes.delete("./:id", deleteUser);

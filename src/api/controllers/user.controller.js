@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../../utils/token");
+const { deleteImgCloudinary } = require("../../middlewares/img.middleware");
 
 const loginUser = async (req, res, next) => {
   try {
@@ -25,7 +26,12 @@ const loginUser = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   try {
-    const newUser = new User(req.body);
+    const newUser = new User({
+      ...req.body,
+      avatar: req.file
+        ? req.file.path
+        : "https://res.cloudinary.com/dy4mossqz/image/upload/v1678118078/utils/Placeholder_view_vector.svg_z87jyu.png",
+    });
     const userExist = await User.findOne({ email: newUser.email });
     if (userExist) {
       return next("User already exist");
@@ -50,10 +56,15 @@ const getUserByID = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    return res.status(200).json(updatedUser);
+    const newUser = new User(req.body);
+    newUser._id = id;
+    const originalUser = await User.findById(id);
+    if (req.file) {
+      deleteImgCloudinary(originalUser.avatar);
+      newUser.avatar = req.file.path;
+    }
+    await User.findByIdAndUpdate(id, newUser);
+    return res.status(200).json(newUser);
   } catch (error) {
     return next(error);
   }
@@ -62,8 +73,11 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deleteUser = await User.findByIdAndDelete(id);
-    res.status(200).json(deleteUser);
+    const user = await User.findByIdAndDelete(id);
+    if (user.avatar) {
+      deleteImgCloudinary(user.avatar);
+      return res.status(200).json(user);
+    }
   } catch (error) {
     return next(error);
   }
