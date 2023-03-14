@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
-    "lint:fix": "eslint --fix ./src",
-    "format": "prettier --check --ignore-path .gitignore ./src",
-    "format:fix": "prettier --write --ignore-path .gitignore ./src"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint . ",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "-": "^0.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
