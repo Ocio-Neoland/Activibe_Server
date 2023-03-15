@@ -9,10 +9,10 @@ const {
   deleteUser,
 } = require("../controllers/user.controller.js");
 
-UserRoutes.get("/", getUserByID);
+UserRoutes.get("/:id", getUserByID);
 UserRoutes.post("/", upload.single("avatar"), registerUser);
-UserRoutes.post("/", loginUser);
+UserRoutes.get("/", loginUser);
 UserRoutes.patch("/:id", updateUser);
-UserRoutes.delete("./:id", deleteUser);
+UserRoutes.delete("/:id", deleteUser);
 
 module.exports = UserRoutes;

@@ -46,7 +46,7 @@ const registerUser = async (req, res, next) => {
 const getUserByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("comments feeds");
     return res.status(200).json(user);
   } catch (error) {
     return next(error);

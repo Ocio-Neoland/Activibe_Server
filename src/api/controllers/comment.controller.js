@@ -2,8 +2,8 @@ const Comment = require("../models/comment.model");
 
 const getAllComments = async (req, res, next) => {
   try {
-    const Comments = await Comment.find().populate("User Activity");
-    res.status(200).json(Comments);
+    const comments = await Comment.find().populate("idUser idActivity");
+    res.status(200).json(comments);
   } catch (error) {
     return next(error);
   }
@@ -12,8 +12,8 @@ const getAllComments = async (req, res, next) => {
 const getCommentByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const Comment = await Comment.findById(id);
-    return res.status(200).json(Comment);
+    const comment = await Comment.findById(id).populate("idUser idActivity");
+    return res.status(200).json(comment);
   } catch (error) {
     return next(error);
   }

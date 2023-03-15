@@ -9,10 +9,12 @@ const FeedSchema = new mongoose.Schema(
     idUser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: false,
     },
     idActivity: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Activity",
+      required: false,
     },
     stars: {
       type: Number,

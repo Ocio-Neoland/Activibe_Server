@@ -3,7 +3,7 @@ const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 
 const getAllActivities = async (req, res, next) => {
   try {
-    const Activities = await Activity.find().populate("Comment Feed");
+    const Activities = await Activity.find().populate("comments feeds");
     res.status(200).json(Activities);
   } catch (error) {
     return next(error);
@@ -13,8 +13,8 @@ const getAllActivities = async (req, res, next) => {
 const getActivityByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const Activity = await Activity.findById(id).populate("Comment Feed");
-    return res.status(200).json(Activity);
+    const activity = await Activity.findById(id).populate("comments feeds");
+    return res.status(200).json(activity);
   } catch (error) {
     return next(error);
   }

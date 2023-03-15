@@ -30,12 +30,14 @@ const UserSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
+        required: false,
       },
     ],
     feeds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Feed",
+        required: false,
       },
     ],
     role: { type: String, default: "user", enum: ["user", "admin"] },
