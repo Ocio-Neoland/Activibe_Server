@@ -33,6 +33,16 @@ const UserSchema = new mongoose.Schema(
         required: false,
       },
     ],
+    favorites: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Favorite",
+      required: false,
+    },
+    createdActivities: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Activities",
+      required: false,
+    },
     feeds: [
       {
         type: mongoose.Schema.Types.ObjectId,

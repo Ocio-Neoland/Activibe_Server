@@ -1,5 +1,6 @@
 const express = require("express");
 const CommentRoutes = express.Router();
+const { isAuth } = require("../middlewares/user.middleware");
 const {
   getAllComments,
   getCommentByID,
@@ -9,8 +10,8 @@ const {
 } = require("../controllers/comment.controller.js");
 CommentRoutes.get("/", getAllComments);
 CommentRoutes.get("/:id", getCommentByID);
-CommentRoutes.post("/", createComments);
-CommentRoutes.patch("/:id", updateComments);
-CommentRoutes.delete("/:id", deleteComments);
+CommentRoutes.post("/", [isAuth], createComments);
+CommentRoutes.patch("/:id", [isAuth], updateComments);
+CommentRoutes.delete("/:id", [isAuth], deleteComments);
 
 module.exports = CommentRoutes;

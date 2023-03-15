@@ -1,6 +1,8 @@
 const express = require("express");
 const ActivityRoutes = express.Router();
 const { upload } = require("../middlewares/img.middleware");
+const { isAuth } = require("../middlewares/user.middleware");
+
 const {
   getAllActivities,
   getActivityByID,
@@ -11,8 +13,8 @@ const {
 
 ActivityRoutes.get("/", getAllActivities);
 ActivityRoutes.get("/:id", getActivityByID);
-ActivityRoutes.post("/", upload.single("image"), createActivities);
-ActivityRoutes.patch("/:id", updateActivities);
-ActivityRoutes.delete("/:id", deleteActivities);
+ActivityRoutes.post("/", [isAuth], upload.single("image"), createActivities);
+ActivityRoutes.patch("/:id", [isAuth], updateActivities);
+ActivityRoutes.delete("/:id", [isAuth], deleteActivities);
 
 module.exports = ActivityRoutes;
