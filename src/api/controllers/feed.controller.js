@@ -2,8 +2,8 @@ const Feed = require("../models/feed.model");
 
 const getAllFeeds = async (req, res, next) => {
   try {
-    const Feeds = await Feed.find().populate("User Activity");
-    res.status(200).json(Feeds);
+    const feeds = await Feed.find().populate("idUser idActivity");
+    res.status(200).json(feeds);
   } catch (error) {
     return next(error);
   }
@@ -12,8 +12,8 @@ const getAllFeeds = async (req, res, next) => {
 const getFeedByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const Feed = await Feed.findById(id);
-    return res.status(200).json(Feed);
+    const feed = await Feed.findById(id).populate("idUser idActivity");
+    return res.status(200).json(feed);
   } catch (error) {
     return next(error);
   }

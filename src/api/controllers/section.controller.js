@@ -14,7 +14,7 @@ const getAllSections = async (req, res, next) => {
 const getSectionByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const section = await Section.findById(id);
+    const section = await Section.findById(id).populate("Activities");
     return res.status(200).json(section);
   } catch (error) {
     return next(error);

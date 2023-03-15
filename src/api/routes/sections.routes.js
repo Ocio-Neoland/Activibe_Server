@@ -12,6 +12,6 @@ SectionRoutes.get("/", getAllSections);
 SectionRoutes.get("/:id", getSectionByID);
 SectionRoutes.post("/", createSections);
 SectionRoutes.patch("/:id", updateSections);
-SectionRoutes.delete("/", deleteSections);
+SectionRoutes.delete("/:id", deleteSections);
 
 module.exports = SectionRoutes;

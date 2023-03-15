@@ -10,7 +10,7 @@ const {
 CommentRoutes.get("/", getAllComments);
 CommentRoutes.get("/:id", getCommentByID);
 CommentRoutes.post("/", createComments);
-CommentRoutes.patch("/", updateComments);
-CommentRoutes.delete("/", deleteComments);
+CommentRoutes.patch("/:id", updateComments);
+CommentRoutes.delete("/:id", deleteComments);
 
 module.exports = CommentRoutes;
