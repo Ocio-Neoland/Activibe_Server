@@ -3,6 +3,17 @@ const bcrypt = require("bcrypt");
 const { generateToken } = require("../../utils/token");
 const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find().populate(
+      "comments favorites createdActivities feeds"
+    );
+    res.status(200).json(users);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -84,6 +95,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
+  getAllUsers,
   loginUser,
   registerUser,
   getUserByID,

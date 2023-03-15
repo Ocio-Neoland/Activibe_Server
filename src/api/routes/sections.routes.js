@@ -1,5 +1,7 @@
 const express = require("express");
 const SectionRoutes = express.Router();
+const { isAuth } = require("../middlewares/user.middleware");
+
 const {
   getAllSections,
   getSectionByID,
@@ -10,8 +12,8 @@ const {
 
 SectionRoutes.get("/", getAllSections);
 SectionRoutes.get("/:id", getSectionByID);
-SectionRoutes.post("/", createSections);
-SectionRoutes.patch("/:id", updateSections);
-SectionRoutes.delete("/:id", deleteSections);
+SectionRoutes.post("/", [isAuth], createSections);
+SectionRoutes.patch("/:id", [isAuth], updateSections);
+SectionRoutes.delete("/:id", [isAuth], deleteSections);
 
 module.exports = SectionRoutes;

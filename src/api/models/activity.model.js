@@ -31,6 +31,11 @@ const ActivitySchema = new mongoose.Schema(
       default: false,
       enum: [false, true],
     },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
   },
   {
     timestamps: true,
