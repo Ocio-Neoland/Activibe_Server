@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ActivitySchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
+    name: { type: String, required: true, trim: true, unique: true },
     image: { type: String, required: false, trim: true },
     description: { type: String, required: true, trim: true },
     location: { type: String, required: true, trim: true },
@@ -35,6 +35,12 @@ const ActivitySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: false,
+    },
+    mediaStars: {
+      type: Number,
+      trim: true,
+      required: false,
+      default: 0,
     },
   },
   {

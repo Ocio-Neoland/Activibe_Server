@@ -1,4 +1,6 @@
 const Feed = require("../models/feed.model");
+const Activity = require("../models/activity.model");
+const User = require("../models/user.model");
 
 const getAllFeeds = async (req, res, next) => {
   try {
@@ -22,8 +24,17 @@ const getFeedByID = async (req, res, next) => {
 const createFeeds = async (req, res, next) => {
   try {
     const newFeed = new Feed(req.body);
+    const findUser = await User.findById(req.body.idUser);
+    const findActivity = await Activity.findById(req.body.idActivity);
+    findUser.feeds.push(newFeed._id);
+    findActivity.feeds.push(newFeed._id);
+    const updateUser = await User.findByIdAndUpdate(req.body.idUser, findUser);
+    const updateActivity = await Activity.findByIdAndUpdate(
+      req.body.idActivity,
+      findActivity
+    );
     const createdFeed = await newFeed.save();
-    return res.status(201).json(createdFeed);
+    return res.status(201).json({ createdFeed, updateUser, updateActivity });
   } catch (error) {
     return next(error);
   }

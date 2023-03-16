@@ -1,5 +1,6 @@
 const Comment = require("../models/comment.model");
-
+const User = require("../models/user.model");
+const Activity = require("../models/activity.model");
 const getAllComments = async (req, res, next) => {
   try {
     const comments = await Comment.find().populate("idUser idActivity");
@@ -22,8 +23,17 @@ const getCommentByID = async (req, res, next) => {
 const createComments = async (req, res, next) => {
   try {
     const newComment = new Comment(req.body);
+    const findUser = await User.findById(req.body.idUser);
+    const findActivity = await Activity.findById(req.body.idActivity);
+    findUser.comments.push(newComment._id);
+    findActivity.comments.push(newComment._id);
+    const updateUser = await User.findByIdAndUpdate(req.body.idUser, findUser);
+    const updateActivity = await Activity.findByIdAndUpdate(
+      req.body.idActivity,
+      findActivity
+    );
     const createdComment = await newComment.save();
-    return res.status(201).json(createdComment);
+    return res.status(201).json({ createdComment, updateUser, updateActivity });
   } catch (error) {
     return next(error);
   }

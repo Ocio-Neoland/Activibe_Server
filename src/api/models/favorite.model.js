@@ -6,7 +6,7 @@ const FavoriteSchema = new mongoose.Schema(
       ref: "User",
       required: false,
     },
-    activities: {
+    favoriteActivity: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Activity",
       required: false,

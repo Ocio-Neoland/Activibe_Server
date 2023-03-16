@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const SectionSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true, required: true },
-    Activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activity" }],
+    activities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: "Activity",
+      },
+    ],
   },
   {
     timestamps: true,

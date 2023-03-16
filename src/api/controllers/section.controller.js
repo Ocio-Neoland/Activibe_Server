@@ -4,7 +4,7 @@ const Section = require("../models/section.model");
 
 const getAllSections = async (req, res, next) => {
   try {
-    const sections = await Section.find().populate("Activities");
+    const sections = await Section.find().populate("activities");
     res.status(200).json(sections);
   } catch (error) {
     return next(error);
@@ -14,7 +14,7 @@ const getAllSections = async (req, res, next) => {
 const getSectionByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const section = await Section.findById(id).populate("Activities");
+    const section = await Section.findById(id).populate("activities");
     return res.status(200).json(section);
   } catch (error) {
     return next(error);
