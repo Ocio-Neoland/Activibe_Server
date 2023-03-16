@@ -7,7 +7,6 @@ const CommentRoutes = require("./src/api/routes/comments.routes");
 const FeedRoutes = require("./src/api/routes/feeds.routes");
 const SectionRoutes = require("./src/api/routes/sections.routes");
 const UserRoutes = require("./src/api/routes/users.routes");
-const FavoritesRoutes = require("./src/api/routes/favorites.routes");
 
 configCloudinary();
 
@@ -30,7 +29,6 @@ app.use("/api/v1/comments", CommentRoutes);
 app.use("/api/v1/feeds", FeedRoutes);
 app.use("/api/v1/sections", SectionRoutes);
 app.use("/api/v1/users", UserRoutes);
-app.use("/api/v1/favorites", FavoritesRoutes);
 
 app.use("*", (req, res, next) => {
   const error = new error(" Route not found");

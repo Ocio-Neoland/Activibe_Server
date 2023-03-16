@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      validate: [validator.isStrongPassword, "Min 8 characters"],
+      validate: [validator.isStrongPassword],
     },
     userName: {
       type: String,
@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema(
     favorites: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Favorite",
+        ref: "Activity",
         required: false,
       },
     ],

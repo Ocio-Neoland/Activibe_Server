@@ -42,6 +42,13 @@ const ActivitySchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true,

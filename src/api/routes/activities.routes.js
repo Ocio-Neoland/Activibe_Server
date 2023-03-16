@@ -9,6 +9,7 @@ const {
   createActivities,
   updateActivities,
   deleteActivities,
+  chooseFavorite,
 } = require("../controllers/activity.controller.js");
 
 ActivityRoutes.get("/", getAllActivities);
@@ -21,5 +22,6 @@ ActivityRoutes.patch(
   updateActivities
 );
 ActivityRoutes.delete("/:id", [isAuth], deleteActivities);
+ActivityRoutes.put("/favorites/:id", chooseFavorite);
 
 module.exports = ActivityRoutes;
