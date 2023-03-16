@@ -38,16 +38,25 @@ const createFeeds = async (req, res, next) => {
     );
 
     const createdFeed = await newFeed.save();
-    if (findActivity.feeds.length) {
-      const allfeeds = findActivity.feeds.map((feed) => ({ feed: feed.stars }));
-      let total = 0;
-      for (let index = 0; index < allfeeds.length - 1; index++) {
-        total += allfeeds[index].feed;
-      }
-      const media = total / allfeeds.length;
-      console.log(media);
+
+    const activityForID = await Activity.findById(req.body.idActivity).populate(
+      "feeds"
+    );
+    //if (findActivity.feeds.length) {
+    const allfeeds = await activityForID.feeds.map((feed) => ({
+      feed: feed.stars,
+    }));
+    let total = 0;
+    for (let index = 0; index < allfeeds.length; index++) {
+      total += allfeeds[index].feed;
     }
-    return res.status(201).json({ createdFeed, updateUser, updateActivity });
+    const media = total / allfeeds.length;
+    console.log(media);
+
+    //}
+    return res
+      .status(201)
+      .json({ createdFeed, updateUser, updateActivity, media });
   } catch (error) {
     return next(error);
   }
