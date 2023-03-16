@@ -33,6 +33,7 @@ const createActivities = async (req, res, next) => {
     const findUser = await User.findById(req.body.createdBy);
     const findSection = await Section.findOne({ name: newActivity.type });
     findUser.createdActivities.push(newActivity._id);
+
     findSection.activities.push(newActivity._id);
     const updateUser = await User.findByIdAndUpdate(
       req.body.createdBy,
@@ -43,7 +44,25 @@ const createActivities = async (req, res, next) => {
       findSection
     );
     const createdActivity = await newActivity.save();
-    return res.status(201).json({ createdActivity, updateUser, updateSection });
+    return res.status(201).json({ createdActivity });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const chooseFavorite = async (req, res, next) => {
+  try {
+    const activity = await Activity.findById(req.params.id);
+    const user = await User.findById(req.body.userId);
+    if (!activity.favorites.includes(req.body.userId)) {
+      await activity.updateOne({ $push: { favorites: req.body.userId } });
+      await user.updateOne({ $push: { favorites: req.params.id } });
+      res.status(200).json("The activity has been liked");
+    } else {
+      await activity.updateOne({ $pull: { favorites: req.body.userId } });
+      await user.updateOne({ $pull: { favorites: req.params.id } });
+      res.status(200).json("The activity has been disliked");
+    }
   } catch (error) {
     return next(error);
   }
@@ -85,4 +104,5 @@ module.exports = {
   createActivities,
   updateActivities,
   deleteActivities,
+  chooseFavorite,
 };
