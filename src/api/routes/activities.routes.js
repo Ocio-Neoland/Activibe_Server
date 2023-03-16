@@ -14,7 +14,12 @@ const {
 ActivityRoutes.get("/", getAllActivities);
 ActivityRoutes.get("/:id", getActivityByID);
 ActivityRoutes.post("/", [isAuth], upload.single("image"), createActivities);
-ActivityRoutes.patch("/:id", [isAuth], updateActivities);
+ActivityRoutes.patch(
+  "/:id",
+  [isAuth],
+  upload.single("image"),
+  updateActivities
+);
 ActivityRoutes.delete("/:id", [isAuth], deleteActivities);
 
 module.exports = ActivityRoutes;

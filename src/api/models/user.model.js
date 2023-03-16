@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       required: true,
       validate: [validator.isEmail, "Email not valid"],
+      unique: true,
     },
     password: {
       type: String,
@@ -20,6 +21,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     avatar: {
       type: String,
@@ -33,16 +35,20 @@ const UserSchema = new mongoose.Schema(
         required: false,
       },
     ],
-    favorites: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Favorite",
-      required: false,
-    },
-    createdActivities: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Activities",
-      required: false,
-    },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Favorite",
+        required: false,
+      },
+    ],
+    createdActivities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Activity",
+        required: false,
+      },
+    ],
     feeds: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -57,7 +63,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-//Antes de guardar el modelo en la base de datos vamos a encriptar la contraseña
 UserSchema.pre("save", async function (next) {
   try {
     this.password = await bcrypt.hash(this.password, 10);

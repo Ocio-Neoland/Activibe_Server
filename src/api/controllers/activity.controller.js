@@ -1,5 +1,7 @@
 const Activity = require("../models/activity.model");
 const { deleteImgCloudinary } = require("../middlewares/img.middleware");
+const User = require("../models/user.model");
+const Section = require("../models/section.model");
 
 const getAllActivities = async (req, res, next) => {
   try {
@@ -28,8 +30,20 @@ const createActivities = async (req, res, next) => {
         ? req.file.path
         : "https://res.cloudinary.com/dy4mossqz/image/upload/v1678118078/utils/Placeholder_view_vector.svg_z87jyu.png",
     });
+    const findUser = await User.findById(req.body.createdBy);
+    const findSection = await Section.findOne({ name: newActivity.type });
+    findUser.createdActivities.push(newActivity._id);
+    findSection.activities.push(newActivity._id);
+    const updateUser = await User.findByIdAndUpdate(
+      req.body.createdBy,
+      findUser
+    );
+    const updateSection = await Section.findByIdAndUpdate(
+      findSection._id,
+      findSection
+    );
     const createdActivity = await newActivity.save();
-    return res.status(201).json(createdActivity);
+    return res.status(201).json({ createdActivity, updateUser, updateSection });
   } catch (error) {
     return next(error);
   }
