@@ -25,15 +25,28 @@ const createFeeds = async (req, res, next) => {
   try {
     const newFeed = new Feed(req.body);
     const findUser = await User.findById(req.body.idUser);
-    const findActivity = await Activity.findById(req.body.idActivity);
+    const findActivity = await Activity.findById(req.body.idActivity).populate(
+      "feeds"
+    );
     findUser.feeds.push(newFeed._id);
     findActivity.feeds.push(newFeed._id);
+
     const updateUser = await User.findByIdAndUpdate(req.body.idUser, findUser);
     const updateActivity = await Activity.findByIdAndUpdate(
       req.body.idActivity,
       findActivity
     );
+
     const createdFeed = await newFeed.save();
+    if (findActivity.feeds.length) {
+      const allfeeds = findActivity.feeds.map((feed) => ({ feed: feed.stars }));
+      let total = 0;
+      for (let index = 0; index < allfeeds.length - 1; index++) {
+        total += allfeeds[index].feed;
+      }
+      const media = total / allfeeds.length;
+      console.log(media);
+    }
     return res.status(201).json({ createdFeed, updateUser, updateActivity });
   } catch (error) {
     return next(error);
