@@ -4,7 +4,11 @@ const Section = require("../models/section.model");
 
 const getAllSections = async (req, res, next) => {
   try {
-    const sections = await Section.find().populate("activities");
+    const sections = await Section.find().populate("activities").populate({
+      path: "activities",
+      populate: "feeds comments favorites",
+    });
+
     res.status(200).json(sections);
   } catch (error) {
     return next(error);

@@ -13,7 +13,7 @@ const ActivitySchema = new mongoose.Schema(
       trim: true,
       enum: [
         "Naturaleza",
-        "JuegosDeMesa",
+        "Juegos de mesa",
         "Adrenalina",
         "Deportes",
         "Exoticos",

@@ -10,9 +10,11 @@ const {
   updateActivities,
   deleteActivities,
   chooseFavorite,
+  getRankingTop10,
 } = require("../controllers/activity.controller.js");
 
 ActivityRoutes.get("/", getAllActivities);
+ActivityRoutes.get("/top10", getRankingTop10);
 ActivityRoutes.get("/:id", getActivityByID);
 ActivityRoutes.post("/", [isAuth], upload.single("image"), createActivities);
 ActivityRoutes.patch(

@@ -23,8 +23,10 @@ const getCommentByID = async (req, res, next) => {
 const createComments = async (req, res, next) => {
   try {
     const newComment = new Comment(req.body);
-    const findUser = await User.findById(req.body.idUser);
-    const findActivity = await Activity.findById(req.body.idActivity);
+    const findUser = await User.findById(req.body.idUser).populate("comments");
+    const findActivity = await Activity.findById(req.body.idActivity).populate(
+      "comments"
+    );
     findUser.comments.push(newComment._id);
     findActivity.comments.push(newComment._id);
     const updateUser = await User.findByIdAndUpdate(req.body.idUser, findUser);
@@ -44,7 +46,7 @@ const updateComments = async (req, res, next) => {
     const { id } = req.params;
     const updatedComment = await Comment.findByIdAndUpdate(id, req.body, {
       new: true,
-    });
+    }).populate("idUser idActivity");
     return res.status(200).json(updatedComment);
   } catch (error) {
     return next(error);
@@ -54,7 +56,9 @@ const updateComments = async (req, res, next) => {
 const deleteComments = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deleteComments = await Comment.findByIdAndDelete(id);
+    const deleteComments = await Comment.findByIdAndDelete(id).populate(
+      "idUser idActivity"
+    );
     res.status(200).json(deleteComments);
   } catch (error) {
     return next(error);

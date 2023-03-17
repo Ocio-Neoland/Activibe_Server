@@ -20,7 +20,7 @@ const loginUser = async (req, res, next) => {
       userName: req.body.userName,
       //   password: req.body.password,
       //   userName: req.body.userName,
-    });
+    }).populate("comments favorites createdActivities feeds");
     if (!user) {
       return next("User not found");
     }
@@ -58,7 +58,9 @@ const registerUser = async (req, res, next) => {
 const getUserByID = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).populate("comments feeds");
+    const user = await User.findById(id).populate(
+      "comments feeds createdActivities favorites"
+    );
     return res.status(200).json(user);
   } catch (error) {
     return next(error);
