@@ -2,6 +2,11 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../../utils/token");
 const { deleteImgCloudinary } = require("../middlewares/img.middleware");
+const Activity = require("../models/activity.model");
+const Comment = require("../models/comment.model");
+const Feed = require("../models/feed.model");
+// const { Comment } = require("../models/comment.model");
+// const { Feed } = require("../models/feed.model");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -44,6 +49,7 @@ const registerUser = async (req, res, next) => {
         ? req.file.path
         : "https://res.cloudinary.com/dsvvktihq/image/upload/v1678960169/utils/20079_iurohv.png",
     });
+
     const userExist = await User.findOne({ email: newUser.email });
     if (userExist) {
       return next("User already exist");
@@ -87,10 +93,40 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-    if (user.avatar) {
-      deleteImgCloudinary(user.avatar);
-      return res.status(200).json(user);
+    const user = await User.findById(id);
+
+    let userEliminated;
+
+    if (
+      !user.createdActivities.length ||
+      !user.feeds.length ||
+      !user.comments.length
+    ) {
+      userEliminated = await User.findByIdAndDelete(id);
+
+      if (user.avatar) {
+        deleteImgCloudinary(user.avatar);
+        return res.status(200).json(userEliminated);
+      }
+    } else {
+      const activitiesCreated = await Activity.deleteMany({
+        createdBy: id,
+      });
+      const feeds = await Feed.deleteMany({
+        idUser: id,
+      });
+      const comments = await Comment.deleteMany({
+        idUser: id,
+      });
+      console.log(comments);
+      console.log(feeds);
+      console.log(activitiesCreated);
+      userEliminated = await User.findByIdAndDelete(id);
+
+      if (user.avatar) {
+        deleteImgCloudinary(user.avatar);
+        return res.status(200).json(userEliminated);
+      }
     }
   } catch (error) {
     return next(error);

@@ -17,6 +17,6 @@ UserRoutes.get("/", [isAuth], getAllUsers);
 UserRoutes.post("/", upload.single("avatar"), registerUser);
 UserRoutes.post("/login", loginUser);
 UserRoutes.patch("/:id", [isAuth], upload.single("avatar"), updateUser);
-UserRoutes.delete("/:id", [isAuth], deleteUser);
+UserRoutes.delete("/:id", deleteUser);
 
 module.exports = UserRoutes;

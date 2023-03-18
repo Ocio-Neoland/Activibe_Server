@@ -2,6 +2,8 @@ const Activity = require("../models/activity.model");
 const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 const User = require("../models/user.model");
 const Section = require("../models/section.model");
+const Comment = require("../models/comment.model");
+const Feed = require("../models/feed.model");
 
 const getAllActivities = async (req, res, next) => {
   try {
@@ -181,12 +183,33 @@ const updateActivities = async (req, res, next) => {
 const deleteActivities = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deleteActivities = await Activity.findByIdAndDelete(id).populate(
-      "comments feeds createdBy favorites"
-    );
-    if (deleteActivities.image) {
-      deleteImgCloudinary(deleteActivities.image);
-      return res.status(200).json(deleteActivities);
+    const activity = await Activity.findById(id);
+    let activityEliminated;
+    if (!activity.feeds.length || !activity.comments.length) {
+      activityEliminated = await Activity.findByIdAndDelete(id).populate(
+        "comments feeds createdBy favorites"
+      );
+      if (activity.image) {
+        deleteImgCloudinary(activity.image);
+        return res.status(200).json(activityEliminated);
+      }
+    } else {
+      const feeds = await Feed.deleteMany({
+        idActivity: id,
+      });
+      const comments = await Comment.deleteMany({
+        idActivity: id,
+      });
+      console.log(feeds);
+      console.log(comments);
+
+      activityEliminated = await Activity.findByIdAndDelete(id).populate(
+        "comments feeds createdBy favorites"
+      );
+      if (activity.image) {
+        deleteImgCloudinary(activity.image);
+        return res.status(200).json(activityEliminated);
+      }
     }
   } catch (error) {
     return next(error);
