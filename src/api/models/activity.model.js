@@ -7,6 +7,12 @@ const ActivitySchema = new mongoose.Schema(
     description: { type: String, required: true, trim: true },
     location: { type: String, required: true, trim: true },
     coordinates: { type: String, required: false, trim: true },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: ["Madrid", "Barcelona", "Malaga"],
+    },
     type: {
       type: String,
       required: true,
