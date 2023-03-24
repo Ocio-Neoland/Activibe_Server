@@ -76,10 +76,22 @@ const getUserByID = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const newUser = new User(req.body);
-    newUser._id = id;
-    newUser.password = await bcrypt.hash(req.body.password, 10);
+
     const originalUser = await User.findById(id);
+    const newUser = new User(req.body);
+
+    if (newUser.avatar !== originalUser.avatar) {
+      newUser.password = originalUser.password;
+    }
+
+    newUser._id = id;
+
+    if (newUser.password !== originalUser.password) {
+      newUser.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      newUser.password = originalUser.password;
+    }
+
     if (req.file) {
       deleteImgCloudinary(originalUser.avatar);
       newUser.avatar = req.file.path;
