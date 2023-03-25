@@ -92,7 +92,7 @@ const getActivityByID = async (req, res, next) => {
         path: "comments",
         populate: "idUser idActivity",
       });
-    console.log(activity);
+    console.log(id);
     activity.mediaStars = 0;
     let media;
     for (const feed of activity.feeds) {
