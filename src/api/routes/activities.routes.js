@@ -15,7 +15,7 @@ const {
 
 ActivityRoutes.get("/:city", getAllActivities);
 ActivityRoutes.get("/:city/top10", getRankingTop10);
-ActivityRoutes.get("/:id", getActivityByID);
+ActivityRoutes.get("/:city/:id", getActivityByID);
 ActivityRoutes.post("/", [isAuth], upload.single("image"), createActivities);
 ActivityRoutes.patch(
   "/:id",
