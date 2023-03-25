@@ -7,16 +7,20 @@ const Feed = require("../models/feed.model");
 
 const getAllActivities = async (req, res, next) => {
   try {
-    const Activities = await Activity.find().populate(
+    const Activities = await Activity.find({ city: req.params.city }).populate(
       "createdBy comments feeds favorites"
     );
     let media;
 
     for (const activity of Activities) {
       activity.mediaStars = 0;
-      for (const feed of activity.feeds) {
-        activity.mediaStars += feed.stars;
-        media = activity.mediaStars / activity.feeds.length;
+      if (!activity.feeds.length) {
+        media = 0;
+      } else {
+        for (const feed of activity.feeds) {
+          activity.mediaStars += feed.stars;
+          media = activity.mediaStars / activity.feeds.length;
+        }
       }
       activity.mediaStars = media;
     }
@@ -218,7 +222,7 @@ const deleteActivities = async (req, res, next) => {
 
 const getRankingTop10 = async (req, res, next) => {
   try {
-    const Activities = await Activity.find().populate(
+    const Activities = await Activity.find({ city: req.params.city }).populate(
       "comments feeds createdBy favorites"
     );
     let media;

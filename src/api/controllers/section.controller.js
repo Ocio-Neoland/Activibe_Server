@@ -43,6 +43,7 @@ const getSectionByName = async (req, res, next) => {
 
     if (req.query.page && !isNaN(parseInt(req.query.page))) {
       const numActivity = await Activity.find({
+        city: req.params.city,
         type: req.params.name,
       }).countDocuments();
 
@@ -59,7 +60,10 @@ const getSectionByName = async (req, res, next) => {
 
       const skip = (page - 1) * limit;
 
-      const allActivities = await Activity.find({ type: req.params.name })
+      const allActivities = await Activity.find({
+        city: req.params.city,
+        type: req.params.name,
+      })
         .skip(skip)
         .limit(limit)
         .populate("feeds comments createdBy favorites")
@@ -96,13 +100,13 @@ const getSectionByName = async (req, res, next) => {
           limit: limit,
           next:
             numPages >= page + 1
-              ? `/api/v1/sections/${req.params.name}?page=${
+              ? `/api/v1/sections/${req.params.city}/${req.params.name}?page=${
                   page + 1
                 }&limit=${limit}`
               : null,
           prev:
             page != 1
-              ? `/api/v1/sections/${req.params.name}?page=${
+              ? `/api/v1/sections/${req.params.city}/${req.params.name}?page=${
                   page - 1
                 }&limit=${limit}`
               : null,
@@ -111,6 +115,7 @@ const getSectionByName = async (req, res, next) => {
       });
     } else {
       const allActivities = await Activity.find({
+        city: req.params.city,
         type: req.params.name,
       })
         .limit(10)
@@ -142,6 +147,7 @@ const getSectionByName = async (req, res, next) => {
         activity.mediaStars = media;
       }
       const numActivity = await Activity.find({
+        city: req.params.city,
         type: req.params.name,
       }).countDocuments();
 
@@ -152,7 +158,7 @@ const getSectionByName = async (req, res, next) => {
           limit: 10,
           next:
             numActivity > 10
-              ? `/api/v1/sections/${req.params.name}?page=2&limit=10`
+              ? `/api/v1/sections/${req.params.city}/${req.params.name}?page=2&limit=10`
               : null,
           prev: null,
         },

@@ -11,7 +11,7 @@ const {
 } = require("../controllers/section.controller.js");
 
 SectionRoutes.get("/", getAllSections);
-SectionRoutes.get("/:name", getSectionByName);
+SectionRoutes.get("/:city/:name", getSectionByName);
 SectionRoutes.post("/", [isAuth], createSections);
 SectionRoutes.patch("/:id", [isAuth], updateSections);
 SectionRoutes.delete("/:id", [isAuth], deleteSections);
