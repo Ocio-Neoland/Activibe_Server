@@ -24,6 +24,6 @@ ActivityRoutes.patch(
   updateActivities
 );
 ActivityRoutes.delete("/:id", [isAuth], deleteActivities);
-ActivityRoutes.put("/favorites/:id", chooseFavorite);
+ActivityRoutes.put("/favorites/:id", [isAuth], chooseFavorite);
 
 module.exports = ActivityRoutes;
