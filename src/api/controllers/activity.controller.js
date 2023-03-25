@@ -145,17 +145,17 @@ const createActivities = async (req, res, next) => {
 
 const chooseFavorite = async (req, res, next) => {
   try {
-    const activity = await Activity.findById(req.params.id).populate(
-      "comments feeds createdBy favorites"
-    );
-    const user = await User.findById(req.body.userId).populate("favorites");
-    if (!activity.favorites.includes(req.body.userId)) {
-      await activity.updateOne({ $push: { favorites: req.body.userId } });
-      await user.updateOne({ $push: { favorites: req.params.id } });
+    const activity = await Activity.findById(req.params.id);
+
+    const user = await User.findById(req.body.id);
+
+    if (!activity.favorites.includes(user._id)) {
+      await activity.updateOne({ $push: { favorites: user._id } });
+      await user.updateOne({ $push: { favorites: activity._id } });
       res.status(200).json("The activity has been liked");
     } else {
-      await activity.updateOne({ $pull: { favorites: req.body.userId } });
-      await user.updateOne({ $pull: { favorites: req.params.id } });
+      await activity.updateOne({ $pull: { favorites: user._id } });
+      await user.updateOne({ $pull: { favorites: activity._id } });
       res.status(200).json("The activity has been disliked");
     }
   } catch (error) {
