@@ -66,7 +66,7 @@ const getSectionByName = async (req, res, next) => {
       })
         .skip(skip)
         .limit(limit)
-        .populate("feeds comments createdBy favorites")
+        .populate("feeds comments createdBy")
         .populate({
           path: "feeds",
           populate: "idUser idActivity",
@@ -119,7 +119,7 @@ const getSectionByName = async (req, res, next) => {
         type: req.params.name,
       })
         .limit(10)
-        .populate("feeds comments createdBy favorites")
+        .populate("feeds comments createdBy")
         .populate({
           path: "feeds",
           populate: "idUser idActivity",
