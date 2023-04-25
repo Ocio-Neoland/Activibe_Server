@@ -5,8 +5,6 @@ const { deleteImgCloudinary } = require("../middlewares/img.middleware");
 const Activity = require("../models/activity.model");
 const Comment = require("../models/comment.model");
 const Feed = require("../models/feed.model");
-// const { Comment } = require("../models/comment.model");
-// const { Feed } = require("../models/feed.model");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -23,8 +21,6 @@ const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({
       userName: req.body.userName,
-      //   password: req.body.password,
-      //   userName: req.body.userName,
     }).populate("comments favorites createdActivities feeds");
     if (!user) {
       return next("User not found");
@@ -131,9 +127,7 @@ const deleteUser = async (req, res, next) => {
       const comments = await Comment.deleteMany({
         idUser: id,
       });
-      console.log(comments);
-      console.log(feeds);
-      console.log(activitiesCreated);
+
       userEliminated = await User.findByIdAndDelete(id);
 
       if (user.avatar) {

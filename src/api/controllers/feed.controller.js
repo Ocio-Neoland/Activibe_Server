@@ -43,26 +43,6 @@ const createFeeds = async (req, res, next) => {
 
     const createdFeed = await newFeed.save();
 
-    // const activityForID = await Activity.findById(req.body.idActivity).populate(
-    //   "feeds"
-    // );
-    // let total = 0;
-    // let mediaStars;
-    // if (findActivity.feeds.length) {
-    //   const allfeeds = await activityForID.feeds.map((feed) => ({
-    //     feed: feed.stars,
-    //   }));
-
-    //   for (let index = 0; index < allfeeds.length; index++) {
-    //     total += allfeeds[index].feed;
-    //   }
-    //   activityForID.mediaStars = total / allfeeds.length;
-    //   mediaStars = await Activity.findByIdAndUpdate(
-    //     req.body.idActivity,
-    //     activityForID
-    //   );
-    // }
-
     return res.status(201).json({
       createdFeed,
       updateUser,
@@ -90,25 +70,6 @@ const deleteFeeds = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteFeeds = await Feed.findByIdAndDelete(id);
-    // const activityForID = await Activity.findById(
-    //   deleteFeeds.idActivity
-    // ).populate("feeds");
-    // let total = 0;
-    // let mediaStars;
-    // if (activityForID.feeds.length) {
-    //   const allfeeds = await activityForID.feeds.map((feed) => ({
-    //     feed: feed.stars,
-    //   }));
-
-    //   for (let index = 0; index < allfeeds.length; index++) {
-    //     total += allfeeds[index].feed;
-    //   }
-    //   activityForID.mediaStars = total / allfeeds.length;
-    //   mediaStars = await Activity.findByIdAndUpdate(
-    //     req.body.idActivity,
-    //     activityForID
-    //   );
-    // }
 
     res.status(200).json(deleteFeeds);
   } catch (error) {
